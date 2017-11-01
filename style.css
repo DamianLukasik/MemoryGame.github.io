@@ -1,0 +1,24 @@
+
+.plansza{
+	text-align: center;
+	margin: 40px;
+	padding: 40px;
+}
+
+.plansza table tr td{
+	height:50px!important;
+	width:50px!important;
+	padding:20px;
+	margin:20px;
+	background-color:silver;
+}
+
+.plansza table tr td img.hid{
+	visibility: hidden;
+	text-align: center;
+}
+
+.plansza table{
+	border-collapse: separate;
+	border-spacing: 15px 15px;
+}

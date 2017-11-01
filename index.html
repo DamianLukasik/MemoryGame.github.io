@@ -1,0 +1,110 @@
+<html lang="pl">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Memory - gra pamięciowa</title>
+	
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" type="text/css" href="style.css">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+</head>
+
+<body>
+
+
+
+
+
+<?php
+/*
+	$array = array();
+	$plate = array();
+	
+	$row = 4;
+	$col = 4;
+	//$fruit = array_pop($stack);
+	//array_push($array,"blue","yellow");
+
+	if (file_exists('dane.xml')) {
+		$xml= simplexml_load_file('dane.xml');	
+		foreach($xml->plate as $plate){
+			$array[] = (string) $plate->link;	
+		}
+		
+		$len = count($xml->plate)-1;
+		$numbers_ = range(1, $len);
+		shuffle($numbers_);
+		$len_ = ($row*$col)/2;
+		$numbers = range(1, $len_);
+		
+		$i=0;
+		foreach($numbers_ as $number_){	
+			if($i>=$len_){break;}		
+			$numbers[$i] = $array[(int)$number_];
+			$i++;			
+		}	
+		shuffle($numbers);
+		$len_ = ($row*$col);
+		foreach($numbers_ as $number_){	
+			if($i>=$len_){break;}		
+			$numbers[$i] = $array[(int)$number_];
+			$i++;			
+		}
+		shuffle($numbers);
+	} else {
+		exit('Nie można odczytać pliku XML.');
+	}
+	
+	echo '
+	<div class="plansza">
+	<table style="width:100%">';
+
+	$p=0;
+	for ($y = 0; $y < $row; $y++)  {
+		echo '<tr>';
+		for ($x = 0; $x < $col; $x++)  {
+			echo '<td id="img_'.$p.'" ><img class="hid" src="'.$numbers[$p].'" alt="Smiley face" height="89" width="89"></td>';
+			$p++;
+		}
+		echo '</tr>';
+	}
+
+	echo '
+	</table>
+	</div>';*/
+?>
+
+<script>
+var para = 0;
+var src_1="";src_2="";obj_1=null;obj_2=null;
+$(document).ready(function(){
+    $("td").click(function(){
+        $(this).find("img").css( "visibility", "visible" );
+		if(para==0){src_1=$(this).find("img").attr("src");obj_1=$(this).attr("id");}
+		if(para==1){src_2=$(this).find("img").attr("src");obj_2=$(this).attr("id");}
+		para++;
+		if(para>=3){
+			para=0;
+			$("td").find("img").css( "visibility", "hidden" );
+			if(src_1==src_2){
+				$("#"+obj_1).css("visibility","hidden");$("#"+obj_1).find("img").removeClass("hid");
+				$("#"+obj_2).css("visibility","hidden");$("#"+obj_1).find("img").removeClass("hid");
+			}
+			src_1="";src_2="";
+		}
+    });
+});
+</script>
+
+</body>
+</html>
