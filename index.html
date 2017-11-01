@@ -95,7 +95,7 @@ $(document).ready(function(){
 		if(para>=3){
 			para=0;
 			$("td").find("img").css( "visibility", "hidden" );
-			if(src_1==src_2){
+			if(src_1==src_2 && obj_1!=obj_2){
 				$("#"+obj_1).css("visibility","hidden");$("#"+obj_1).find("img").removeClass("hid");
 				$("#"+obj_2).css("visibility","hidden");$("#"+obj_1).find("img").removeClass("hid");
 			}
