@@ -84,22 +84,37 @@
 
 
 <script>
-var para = 0;
-var src_1="";src_2="";obj_1=null;obj_2=null;
+
+var score = 0;
+var plate = [];
 $(document).ready(function(){
     $("td").click(function(){
-        $(this).find("img").css( "visibility", "visible" );
-		if(para==0){src_1=$(this).find("img").attr("src");obj_1=$(this).attr("id");}
-		if(para==1){src_2=$(this).find("img").attr("src");obj_2=$(this).attr("id");}
-		para++;
-		if(para>=3){
-			para=0;
-			$("td").find("img").css( "visibility", "hidden" );
-			if(src_1==src_2 && obj_1!=obj_2){
-				$("#"+obj_1).css("visibility","hidden");$("#"+obj_1).find("img").removeClass("hid");
-				$("#"+obj_2).css("visibility","hidden");$("#"+obj_1).find("img").removeClass("hid");
-			}
-			src_1="";src_2="";
+		if(plate.length==0){
+			plate.push($(this));
+			$(this).css( "background-color", "orange");		
+			$(this).find("img").css( "visibility", "visible" );		
+		}
+		if(plate.length==1 && plate[0].attr("id") != $(this).attr("id")){
+			plate.push($(this));
+			$(this).css( "background-color", "orange");		
+			$(this).find("img").css( "visibility", "visible" );
+			setTimeout(function(){ 
+				if(
+					plate[0].find("img").attr("src")==plate[1].find("img").attr("src") 
+					&& plate[0].attr("id")!=plate[1].attr("id")
+				){
+					$("#"+plate[0].attr("id")).css("visibility","hidden");
+					$("#"+plate[1].attr("id")).css("visibility","hidden");
+					$("#"+plate[0].attr("id")).find("img").removeClass("hid");					
+					$("#"+plate[1].attr("id")).find("img").removeClass("hid");
+				}
+				$("#"+plate[0].attr("id")).css( "background-color", "silver");
+				$("#"+plate[1].attr("id")).css( "background-color", "silver");
+				$("#"+plate[0].attr("id")).find("img").css( "visibility", "hidden" );
+				$("#"+plate[1].attr("id")).find("img").css( "visibility", "hidden" );
+				plate = [];
+				score+=10;
+			}, 1000);				
 		}
     });
 });
