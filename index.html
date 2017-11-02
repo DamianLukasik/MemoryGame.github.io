@@ -21,7 +21,7 @@
 
 <body>
 
-<div class="container Menu">
+<div id="MenuGame" class="container Menu">
 	<button id="StartGame" type="button" class="btn btn-primary btn-md">Start</button>   
 </div>
 
@@ -85,6 +85,7 @@ $(document).ready(function(){
 		
 		function GameOver(){
 			//alert("Game Over");
+			$("#MenuGame").show();
 		}
     }
 	
@@ -114,6 +115,7 @@ $(document).ready(function(){
 					}
 				}
 				document.getElementById("plansza_tab").innerHTML = table.substr(0,(table.length-4));
+				$("#MenuGame").hide();
 				len_*=2;
 				for (k = 0; k <len_; k++) {
 					document.getElementById("img_"+k).addEventListener('click', OnClick_td);
