@@ -21,74 +21,26 @@
 
 <body>
 
+<div class="container Menu">
+	<button id="StartGame" type="button" class="btn btn-primary btn-md">Start</button>   
+</div>
+
+
 <div class="plansza"><table id="plansza_tab"></table></div>
 
-<script>
-
-	var MyArray = [];
-	var plate = [];
-	
-	var row = 4;
-	var col = 4;
-	
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			myFunction(this);
-			shuffle(MyArray);
-			var len_ = (row*col)/2;
-			var nr = 0;
-			var table="<tr>";
-			MyArray.splice(0, 8);
-			for (i = 0; i <len_; i++) {
-				table += "<td id='img_"+nr+"'><img class='hid' src='" + MyArray[i] + "'></td>";
-				nr++;
-				if((i+1)%col==0){
-					table+="</tr><tr>";
-				}
-			}
-			shuffle(MyArray);
-			for (i = 0; i <len_; i++) {
-				table += "<td id='img_"+nr+"'><img class='hid' src='" + MyArray[i] + "'></td>";
-				nr++;
-				if((i+1)%col==0){
-					table+="</tr><tr>";					
-				}
-			}
-			document.getElementById("plansza_tab").innerHTML = table.substr(0,(table.length-4));
-		}
-	};
-	xmlhttp.open("GET","dane.xml",true);
-	xmlhttp.send();
-	
-	function myFunction(xml) {
-		var i;
-		var xmlDoc = xml.responseXML;		
-		var x = xmlDoc.getElementsByTagName("plate");
-		for (i = 0; i <x.length; i++) {
-			MyArray.push(x[i].getElementsByTagName("link")[0].childNodes[0].nodeValue);
-		}
-	}
-	
-	function shuffle(a) {
-		for (let i = a.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[a[i], a[j]] = [a[j], a[i]];
-		}
-	}
-	
-	
-
-
-</script>
-
-
-<script>
-
-var score = 0;
-var plate = [];
+<script>	
 $(document).ready(function(){
-    $("td").click(function(){
+
+	var plates_visible = 0;
+	var score = 0;
+	var plate = [];
+
+
+	$("#StartGame").click(function(){
+		StartGame();
+	});
+
+	var OnClick_td = function(){
 		if(plate.length==0){
 			plate.push($(this));
 			InvertPlate($(this),1);
@@ -96,15 +48,20 @@ $(document).ready(function(){
 		if(plate.length==1 && plate[0].attr("id") != $(this).attr("id")){
 			plate.push($(this));
 			InvertPlate($(this),1);
-			setTimeout(function(){ 
+			setTimeout(function(){
 				if(plate[0].find("img").attr("src")==plate[1].find("img").attr("src") && plate[0].attr("id")!=plate[1].attr("id")){
 					InvertPlate($("#"+plate[0].attr("id")),3);
 					InvertPlate($("#"+plate[1].attr("id")),3);
+					plates_visible-=2;
 				}
 				InvertPlate($("#"+plate[0].attr("id")),2);
 				InvertPlate($("#"+plate[1].attr("id")),2);				
 				plate = [];
 				score+=10;
+				if(plates_visible==0)
+				{
+					setTimeout(GameOver(), 800);
+				}
 			}, 1000);				
 		}
 		
@@ -125,7 +82,64 @@ $(document).ready(function(){
 				default:
 			}
 		}
-    });
+		
+		function GameOver(){
+			//alert("Game Over");
+		}
+    }
+	
+	function StartGame() {
+		var MyArray = [];
+		
+		var row = 4;
+		var col = 4;
+		plates_visible = row*col;
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {				
+				myFunction(this);	
+				shuffle(MyArray);
+				var len_ = (row*col)/2;
+				var nr = 0;
+				var table="<tr>";
+				MyArray.splice(0, len_);
+				for (q = 0; q <2; q++) {
+					shuffle(MyArray);
+					for (i = 0; i <len_; i++) {
+						table += "<td id='img_"+nr+"'><img class='hid' src='" + MyArray[i] + "'></td>";
+						nr++;
+						if((i+1)%col==0){
+							table+="</tr><tr>";
+						}
+					}
+				}
+				document.getElementById("plansza_tab").innerHTML = table.substr(0,(table.length-4));
+				len_*=2;
+				for (k = 0; k <len_; k++) {
+					document.getElementById("img_"+k).addEventListener('click', OnClick_td);
+				}
+			}
+		};
+		xmlhttp.open("GET","dane.xml",true);
+		xmlhttp.send();
+		
+		function myFunction(xml) {
+			var i;
+			var xmlDoc = xml.responseXML;		
+			var x = xmlDoc.getElementsByTagName("plate");
+			for (i = 0; i <x.length; i++) {
+				MyArray.push(x[i].getElementsByTagName("link")[0].childNodes[0].nodeValue);
+			}
+		}
+		
+		function shuffle(a) {
+			for (let i = a.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[a[i], a[j]] = [a[j], a[i]];
+			}
+		}
+	}
+	
 });
 </script>
 
